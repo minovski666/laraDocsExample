@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Facades\App\Documentation;
 
 class DocumentationController extends Controller
 {
@@ -12,6 +12,8 @@ class DocumentationController extends Controller
             return redirect('docs/'.DEFAULT_VERSION.'/'.$version);
         }
 
-        Documentation::get();
+        return view('docs', [
+            'content' => Documentation::get($version, $page)
+        ]);
     }
 }
