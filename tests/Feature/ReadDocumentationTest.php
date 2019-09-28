@@ -23,6 +23,6 @@ class ReadDocumentationTest extends TestCase
         }));
         $this->get('docs/' . DEFAULT_VERSION . '/stub')
             ->assertSee('<h1>Stub</h1>')
-            ->assertSee('<p>Here is Docs stub. '.DEFAULT_VERSION.'.</p>');
+            ->assertSee('<p>Here is Docs stub.</p>');
     }
 }

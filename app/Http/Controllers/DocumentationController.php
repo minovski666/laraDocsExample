@@ -6,14 +6,19 @@ use Facades\App\Documentation;
 
 class DocumentationController extends Controller
 {
-    public function show($version, $page='')
+    public function show($version, $page = '')
     {
-        if (!in_array($version, [1.0, 1.1])){
-            return redirect('docs/'.DEFAULT_VERSION.'/'.$version);
+        if (!in_array($version, Documentation::versions())) {
+            return redirect('docs/' . DEFAULT_VERSION . '/' . $version);
         }
 
-        return view('docs', [
-            'content' => Documentation::get($version, $page)
-        ]);
+        try {
+            return view('docs', [
+                'content' => Documentation::get($version, $page)
+            ]);
+        } catch (\Exception $e) {
+            abort(404, "The requested documentation was not found.");
+        }
+
     }
 }

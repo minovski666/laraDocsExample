@@ -5,6 +5,8 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use File;
+use \App\Documentation;
 
 class DocumentationTest extends TestCase
 {
@@ -13,21 +15,21 @@ class DocumentationTest extends TestCase
      */
     public function gets_doc_page_for_given_version()
     {
-        \File::shouldReceive('exist')->andReturn(true);
-        \File::shouldReceive('get')->once()->with(resource_path('docs/1.0/example.md'))->andReturn('# Example Page');
+        File::shouldReceive('exists')->andReturn(true);
+        File::shouldReceive('get')->once()->with(resource_path('docs/1.0/example.md'))->andReturn('# Example Page For {{version}}');
 
-        $content = (new \App\Documentation)->get('1.0', 'example');
+        $content = (new Documentation)->get('1.0', 'example');
 
-        $this->assertEquals('<h1>Example Page</h1>', $content);
+        $this->assertEquals('<h1>Example Page For 1.0</h1>', $content);
     }
 
     /**
      * @test
      */
-    public function throsws_exception_if_markdown_file_doesnt_exists()
+    public function throws_exception_if_markdown_file_doesnt_exists()
     {
         $this->expectException(\Exception::class);
-        (new \App\Documentation)->get('1.0', 'example');
+        (new Documentation)->get('1.0', 'example');
     }
 
 }
